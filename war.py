@@ -1,4 +1,8 @@
+"""
+war.py - A Python implementation of the card game "War" (with Jokers).
+"""
 import random
+
 
 class Card(object):
     """ A standard playing card. Don't make me get the Book of Hoyle!"""
@@ -30,6 +34,7 @@ class Card(object):
         """
         return cmp(self.rank, other.rank)
 
+
 class Deck(object):
     """ A 54-card War deck, including two jokers. """
     def __init__(self):
@@ -52,11 +57,12 @@ class Deck(object):
         """ Take a card from the top of the deck """
         return self.cards.pop()
 
+
 class Hand(object):
     """ A players hand (collection of cards) """
-    def __init__(self, name, cards=None):
+    def __init__(self, name):
         self.name = name
-        self.cards = cards or []
+        self.cards = []
 
     def add_card_to_bottom(self, card):
         """ Add a card to the bottom of the deck """
@@ -84,8 +90,11 @@ class Hand(object):
     def has_a_joker(self):
         return any([card.rank == Card.joker_rank for card in self.cards])
 
+
 def play_round(hand1, hand2, round):
-    """ Play a round of war """
+    """
+    Play a round of war. Print the result of the round. Return the winning hand.
+    """
     winning_hand = None
     card1, card2 = hand1.play_card(), hand2.play_card()
     if card1 < card2:
@@ -102,18 +111,22 @@ def play_round(hand1, hand2, round):
         winning_hand.add_card_to_bottom(card1)
         winning_hand.add_card_to_bottom(card2)
 
-    print "Round #%3d: %s [1:(%2d) %s, 2:(%2d) %s]" % (round, winning_hand.name, len(hand1.cards), card1, len(hand2.cards), card2)
+    print "Round #%3d: %s [1:(%2d) %s, 2:(%2d) %s]" % (round, winning_hand.name,
+                                                       len(hand1.cards), card1,
+                                                       len(hand2.cards), card2)
     return winning_hand
 
 def play_tie(hand1, hand2, round):
-    """ Play a tie-breaking round of war """
+    """ Play a tie-breaking round of war. Return the winning hand. """
     if hand1.out_of_cards:
         return hand2
     elif hand2.out_of_cards:
         return hand1
 
     # Players offer up 3 cards to put down in the kitty, which will go to the
-    # winner of the tie-breaking round
+    # winner of the tie-breaking round. If the player doesn't have 3 cards left,
+    # the player lays down n-1 cards and uses their last card to offer up against
+    # the other player to see who breaks the tie.
     hand1_down_cards = []
     hand2_down_cards = []
     for hand, down_cards in [(hand1, hand1_down_cards), (hand2, hand2_down_cards)]:
@@ -122,8 +135,14 @@ def play_tie(hand1, hand2, round):
 
     # Play a round to determine who wins the tie
     winning_hand = play_round(hand1, hand2, 0)
-    print "%s won the tie and %d cards to boot!" % (winning_hand.name, len(hand1_down_cards + hand2_down_cards))
+
+    print "%s won the tie and %d cards to boot!" % (winning_hand.name,
+                                                    len(hand1_down_cards + hand2_down_cards))
+
+    # The winner gets all the down cards
     for spoils in hand1_down_cards + hand2_down_cards:
+        if spoils.rank == "Joker":
+            print "Oooo, a Joker was won in a tie-breaker!"
         winning_hand.add_card_to_bottom(spoils)
 
     return winning_hand
@@ -146,17 +165,24 @@ if __name__ == "__main__":
     assert len(hand1.cards) != 0, "Why didn't player 1 get any cards?"
     assert len(hand2.cards) != 0, "Why didn't player 2 get any cards?"
 
+    # Who has jokers to start? Could be a sign of who will win!
+    for hand in (hand1, hand2):
+        print hand.name, "has jokers to start?:", hand.has_a_joker
+
     # Play War!
     round = 1
-    while not any([hand1.out_of_cards, hand2.out_of_cards]) and round <= 2000:
+    while not any([hand1.out_of_cards, hand2.out_of_cards]):
         play_round(hand1, hand2, round)
         round += 1
 
-    if hand1.out_of_cards:
-        print "Player 2 is the winner"
-    elif hand2.out_of_cards:
-        print "Player 1 is the winner"
+    # Winners must have the jokers!
+    for hand in (hand1, hand2):
+        print hand.name, "has jokers to finish?:", hand.has_a_joker
+
+    # Declare a winner
+    for hand in (hand1, hand2):
+        if not hand.out_of_cards:
+            print hand.name, "is the winner!"
+            break
     else:
-        print "No clear winner"
-    print "Player 1 has jokers?: ", hand1.has_a_joker
-    print "Player 2 has jokers?: ", hand2.has_a_joker
+        print "No clear winner! How did this happen?"

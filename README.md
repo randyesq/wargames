@@ -1,46 +1,48 @@
+A Python implementation of the War card game, Kleinman house style. Wikipedia says that
+War is like https://en.wikipedia.org/wiki/War_(card_game), but this doesn't involve
+any Jokers, which is the real way to play war.
 
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+This really is just an implementation to help teach my kids how to write code to
+play card games that they already know how to play.
 
+## Going to war
 
-Welcome to your Python project on Cloud9 IDE!
-
-To show what Cloud9 can do, we added a basic sample web application to this
-workspace, from the excellent Python tutorial _Learning Python the Hard Way_.
-We skipped ahead straight to example 50 which teaches how to build a web
-application.
-
-If you've never looked at the tutorial or are interested in learning Python,
-go check it out. It's a great hands-on way for learning all about programming
-in Python.
-
-* _Learning Python The Hard Way_, online version and videos: 
-http://learnpythonthehardway.org/book/
-
-* Full book: http://learnpythonthehardway.org
-
-## Starting from the Terminal
-
-To try the example application, type the following in the terminal:
+To play war, simple run:
 
 ```
-cd ex50
-python bin/app.py
+$ python war.py
 ```
-
-Alternatively, open the file in ex50/bin and click the green Run
-button!
 
 ## Configuration
 
-You can configure your Python version and `PYTHONPATH` used in
-Cloud9 > Preferences > Project Settings > Language Support.
+None, it's pretty simple. Two players, battling it out.
 
-## Support & Documentation
+## Sample output of game play
+```
+$ python war.py
+Player 1 has jokers to start?: True
+Player 2 has jokers to start?: False
+Round #  1: Player 1 [1:(28) King of Clubs, 2:(26) 4 of Hearts]
+Round #  2: Player 1 [1:(29) 7 of Spades, 2:(25) 4 of Clubs]
+Round #  3: Player 1 [1:(30) 6 of Hearts, 2:(24) 3 of Hearts]
+Round #  4: Player 2 [1:(29) 3 of Clubs, 2:(25) King of Hearts]
+Round #  5: Player 1 [1:(30) 9 of Clubs, 2:(24) 8 of Clubs]
+Round #  6: Player 2 [1:(29) 5 of Spades, 2:(25) Joker]
+Round #  7: Player 1 [1:(30) 5 of Diamonds, 2:(24) 4 of Spades]
 
-Visit http://docs.c9.io for support, or to learn more about using Cloud9 IDE.
-To watch some training videos, visit http://www.youtube.com/user/c9ide.
+[... snip ...]
+
+Round #170: Player 2 [1:(45) 6 of Clubs, 2:( 9) Jack of Spades]
+Round #171: Player 1 [1:(46) King of Diamonds, 2:( 8) 10 of Hearts]
+There is a tie c1 2 of Diamonds, c2 2 of Spades
+Round #  0: Player 1 [1:(43) 10 of Spades, 2:( 3) 6 of Hearts]
+Player 1 won the tie and 6 cards to boot!
+Round #172: Player 1 [1:(51) 2 of Diamonds, 2:( 3) 2 of Spades]
+Round #173: Player 1 [1:(52) 10 of Diamonds, 2:( 2) Ace of Clubs]
+Round #174: Player 1 [1:(53) King of Spades, 2:( 1) Jack of Spades]
+Round #175: Player 1 [1:(54) Jack of Diamonds, 2:( 0) 6 of Clubs]
+Player 1 has jokers to finish?: True
+Player 2 has jokers to finish?: False
+Player 1 is the winner!
+$ 
+```
